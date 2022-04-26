@@ -1,36 +1,81 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 const Form = () => {
+  const initialData = {
+    title: "",
+    author: "",
+    genre: "",
+    description: "",
+  };
+
+  const withImg = {
+    marginTop: "1rem",
+    width: "75%",
+    height: "15rem",
+    border: "none",
+    borderRadius: "1.5rem",
+    overflow: "hidden",
+  };
+
+  const withhoutImg = {
+    marginTop: "1rem",
+    width: "75%",
+    border: "2px dashed",
+  };
+
+  const [form, setForm] = useState(initialData);
+  const [src, setSrc] = useState("");
+
+  const inputRef = useRef();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("enviando datos al backend");
+  };
+
+  const handleFile = () => {
+    const file = inputRef.current.files[0],
+      image = URL.createObjectURL(file);
+
+    setSrc(image);
+  };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
   return (
     <>
       <div className="container  justify-content-center">
         <div className="row">
           <div className="container col-10">
-            <form className="container col-12 mt-5">
+            <form
+              className="container col-12 mt-5"
+              onSubmit={(e) => handleSubmit(e)}
+            >
               <div className="row row-cols-1 row-cols-md-2">
                 <div className="col-12 col-md-5">
                   <div className="col-12">
-                    <label for="formFile" class="form-label">
+                    <label htmlFor="formFile" className="form-label">
                       Carga una imagen
                     </label>
-                    <input className="form-control" type="file" id="formFile" />
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="formFile"
+                      name="image"
+                      onChange={(e) => handleFile(e)}
+                      ref={inputRef}
+                    />
                   </div>
                   <div className="col-12 container-img-book">
-                    <div className="responsive-img">
-                      <img
-                        src="https://res.cloudinary.com/developmentcrissroldan/image/upload/v1649733592/sin-imagen_wyliqu.png"
-                        className="img-fluid-book"
-                        alt="sin-imagen"
-                      />
-                      <div className="container mt-5">
-                        <button type="submit" className="btn btn-primary">
-                          Add Book
-                        </button>
-                      </div>
+                    <div style={src === "" ? withhoutImg : withImg}>
+                      <img src={src} className="img-fluid-book" alt="add-img" />
                     </div>
                   </div>
                 </div>
-                <div className="col-12 col-md-7">
+
+                <div className="col-12 col-md-7 mt-5 mt-md-0">
                   <div className="mb-3">
                     <label htmlFor="titulo" className="form-label">
                       Titulo
@@ -41,6 +86,8 @@ const Form = () => {
                       id="titulo"
                       aria-describedby="emailHelp"
                       name="title"
+                      value={form.title}
+                      onChange={(e) => handleInput(e)}
                     />
                     <div className="form-text">
                       <i>Campo obligatorio</i>
@@ -55,6 +102,8 @@ const Form = () => {
                       className="form-control"
                       id="author"
                       name="author"
+                      value={form.author}
+                      onChange={(e) => handleInput(e)}
                     />
                     <div className="form-text">
                       <i>Campo obligatorio</i>
@@ -69,6 +118,8 @@ const Form = () => {
                       className="form-control"
                       id="genre"
                       name="genre"
+                      value={form.genre}
+                      onChange={(e) => handleInput(e)}
                     />
                     <div className="form-text">
                       <i>Campo obligatorio</i>
@@ -84,8 +135,17 @@ const Form = () => {
                       name="description"
                       rows="5"
                       style={{ resize: "none" }}
+                      value={form.description}
+                      onChange={(e) => handleInput(e)}
                     ></textarea>
                   </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-12 container-btn">
+                  <button type="submit" className="btn btn-primary">
+                    Add Book
+                  </button>
                 </div>
               </div>
             </form>
