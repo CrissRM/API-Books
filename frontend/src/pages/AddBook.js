@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../components/Form";
-import sendData from "../helpers/sendData";
+import {sendData} from "../helpers/sendData";
 
 const AddBook = () => {
   return (
