@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
+import Loader from "./Loader";
+import Message from "./Message";
 
-const Form = () => {
+const Form = ({ handleAxios }) => {
   const initialData = {
     title: "",
     author: "",
@@ -25,12 +27,25 @@ const Form = () => {
 
   const [form, setForm] = useState(initialData);
   const [src, setSrc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [msgSuccess, setMsgSuccess] = useState(false);
 
   const inputRef = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("enviando datos al backend");
+    setIsLoading(true);
+    setMsgSuccess(true);
+    const data = { ...form, image: inputRef.current.files[0] };
+    await handleAxios(data);
+    setIsLoading(false);
+    setForm(initialData);
+    setSrc("");
+    inputRef.current.value = "";
+    setMsgSuccess(true);
+    setTimeout(() => {
+      setMsgSuccess(false);
+    }, 3000);
   };
 
   const handleFile = () => {
@@ -44,6 +59,7 @@ const Form = () => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
+
   return (
     <>
       <div className="container  justify-content-center">
@@ -73,6 +89,25 @@ const Form = () => {
                       <img src={src} className="img-fluid-book" alt="add-img" />
                     </div>
                   </div>
+
+                  {!isLoading ? "" : <Loader />}
+                  {msgSuccess && isLoading ? (
+                    <Message
+                      msg="Añadiendo un nuevo libro..."
+                      colorText="darkBlue"
+                    />
+                  ) : (
+                    ""
+                  )}
+
+                  {msgSuccess && !isLoading ? (
+                    <Message
+                      msg="Se ha añadido un nuevo libro"
+                      colorText="green"
+                    />
+                  ) : (
+                    ""
+                  )}
                 </div>
 
                 <div className="col-12 col-md-7 mt-5 mt-md-0">
