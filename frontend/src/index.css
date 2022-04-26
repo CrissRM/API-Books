@@ -1,0 +1,19 @@
+html {
+  box-sizing: border-box;
+}
+
+.container-img-book {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.responsive-img {
+  width: 75%;
+}
+.img-fluid-book {
+  max-width: 100%;
+  margin-top: 1rem;
+  aspect-ratio: 1/1;
+}
