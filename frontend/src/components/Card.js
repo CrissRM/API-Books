@@ -1,11 +1,15 @@
-import React from "react";
-import { deleteData } from "../helpers/sendData";
+import React, { useState } from "react";
+import Form from "./Form";
+import Modal from "./Modal";
+import { putData } from "../helpers/sendData";
 
-const Card = ({ data }) => {
+const Card = ({ data, handleDelete }) => {
   const { title, author, genre, description, image, _id } = data;
 
-  const handleDelete = (_id) => {
-    deleteData(_id);
+  const [modal, setModal] = useState(true);
+
+  const handleDeleteClick = () => {
+    handleDelete(_id);
   };
 
   return (
@@ -32,16 +36,68 @@ const Card = ({ data }) => {
         </div>
 
         <div className="container-btn">
-          <button type="button" class="btn btn-primary ">
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
             Editar
           </button>
-          <button type="button" class="btn btn-danger" onClick={handleDelete}>
+
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={handleDeleteClick}
+          >
             Eliminar
           </button>
         </div>
       </article>
+
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-body">
+              {
+                <Form
+                  handleAxios={putData(_id)}
+                  initialData={(title, author, genre, description)}
+                  srcImg={image}
+                />
+              }
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" className="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
 
 export default Card;
+
+{
+  /* {modal && <Modal data={data} />} */
+}
+
+{
+  /* <Modal data={data} /> */
+}

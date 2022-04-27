@@ -32,7 +32,18 @@ export const deleteData = async (id) => {
   try {
     await axios({
       method: "DELETE",
-      url: `http://localhost:5000/api-books/:${id}`,
+      url: `http://localhost:5000/api-books/${id}`,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const putData = async (id) => {
+  try {
+    await axios({
+      method: "PUT",
+      url: `http://localhost:5000/api-books/${id}`,
     });
   } catch (error) {
     console.log(error);

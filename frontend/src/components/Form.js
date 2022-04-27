@@ -2,14 +2,7 @@ import React, { useState, useRef } from "react";
 import Loader from "./Loader";
 import Message from "./Message";
 
-const Form = ({ handleAxios }) => {
-  const initialData = {
-    title: "",
-    author: "",
-    genre: "",
-    description: "",
-  };
-
+const Form = ({ handleAxios, initialData, srcImg }) => {
   const withImg = {
     marginTop: "1rem",
     width: "75%",
@@ -26,7 +19,7 @@ const Form = ({ handleAxios }) => {
   };
 
   const [form, setForm] = useState(initialData);
-  const [src, setSrc] = useState("");
+  const [src, setSrc] = useState(srcImg);
   const [isLoading, setIsLoading] = useState(false);
   const [msgSuccess, setMsgSuccess] = useState(false);
 
